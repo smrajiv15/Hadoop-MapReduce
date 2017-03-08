@@ -1,0 +1,24 @@
+Steps to run
+------------
+
+1. Download the Austin Police reports (2008-2011) from the data.gov site.
+
+wget -O apd08.csv https://data.austintexas.gov/api/views/r6sg-xka2/rows.csv?accessType=DOWNLOAD
+
+wget -O apd09.csv https://data.austintexas.gov/api/views/ei2n-fehk/rows.csv?accessType=DOWNLOAD
+
+wget -O apd10.csv https://data.austintexas.gov/api/views/4c6h-tv2y/rows.csv?accessType=DOWNLOAD
+
+wget -O apd11.csv https://data.austintexas.gov/api/views/gr59-ids7/rows.csv?accessType=DOWNLOAD
+
+2. Create an input directory in HDFS, and copy the downloaded Austin police reports to HDFS.
+
+cd $HADOOP_PREFIX
+
+bin/hadoop fs -mkdir /hw2-input
+
+bin/hadoop fs -copyFromLocal ~/*.csv /hw2-input/
+
+3. Run the python MapReduce program using hadoop streaming.
+
+bin/hadoop jar /usr/local/hadoop-1.2.1/hadoop-streaming-1.2.0.jar -input /hw2-input -output /hw2-output -mapper prog/mapper.py -reducer prog/reducer.py -file prog/mapper.py -file prog/reducer.py 
